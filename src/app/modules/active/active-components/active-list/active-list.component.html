@@ -1,0 +1,6 @@
+<div class="container" *ngFor="let user of userService.users">
+  <div class="card" *ngIf="user.isDeleted == false">
+    <h5 class="card-title">{{ user.firstName }}{{ user.lastName }}</h5>
+    <button class="btn btn-danger" (click)="toggleDeleted(user)">Deactivate</button>
+  </div>
+</div>
