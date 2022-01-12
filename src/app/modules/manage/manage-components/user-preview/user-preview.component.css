@@ -1,0 +1,14 @@
+li{
+  list-style: none;
+  margin-left: 2rem;
+}
+.label{
+  font-weight: bold;
+}
+
+.red-color{
+    color: red;
+  }
+  .green-color{
+    color: green;
+  }

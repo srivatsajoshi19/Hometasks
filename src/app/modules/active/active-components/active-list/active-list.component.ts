@@ -17,4 +17,7 @@ export class ActiveListComponent implements OnInit {
   toggleDeleted(user:User){
     this.userService.toggleDeleted(user);
   }
+  getClass(){
+    return 'green-border';
+  }
 }

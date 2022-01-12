@@ -17,4 +17,7 @@ export class DeletedListComponent implements OnInit {
   toggleDeleted(user: User){
     this.userService.toggleDeleted(user);
   }
+  getClass(){
+    return 'red-border';
+  }
 }

@@ -21,7 +21,7 @@ export class AllUsersComponent implements OnInit {
     this.currentUser = user;
   }
   borderStyle(user: User): string {
-    if (!user.isDeleted) {
+    if (user.isDeleted) {
       return 'red-border';
     } else {
       return 'green-border';

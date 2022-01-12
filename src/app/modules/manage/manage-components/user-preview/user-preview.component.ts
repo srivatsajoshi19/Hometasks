@@ -13,8 +13,9 @@ export class UserPreviewComponent implements OnInit {
   @Input() user: User;
   constructor(private userService: UsersService) { }
 
-  // user:User = this.userService.currentUser;
   ngOnInit(): void {
   }
-
+getColor(user:User):string{
+  return user.isDeleted ? 'red-color' : 'green-color';
+}
 }

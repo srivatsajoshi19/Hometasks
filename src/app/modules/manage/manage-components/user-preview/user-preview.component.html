@@ -1,11 +1,25 @@
 <div>
-    <div class="card" style="width: 18rem">
-        <div class="card-body">
-            <h5 class="card-title">{{user.firstName}}{{user.lastName}}</h5>
-            <p class="card-text">{{user.isDeleted ? "Deleted":"Active"}}</p>
-            <p class="card-text">{{user.id}}</p>
-            <p class="card-text">{{user.firstName}}</p>
-            <p class="card-text">{{user.lastName}}</p>
-        </div>
+  <div class="card" style="width: 18rem">
+    <div class="card-body">
+      <h5 class="card-title">{{ user.firstName }} {{ user.lastName }}</h5>
+      <p class="card-text" [ngClass]="getColor(user)">
+        {{ user.isDeleted ? "Deleted" : "Active" }}
+      </p>
     </div>
+    <hr />
+    <div class="row">
+      <div class="col">
+        <li><span class="label">Login</span></li>
+        <li><span class="label">First Name</span> </li>
+        <li><span class="label">Last Name</span> </li>
+        <li><span class="label">Age</span></li>
+      </div>
+      <div class="col">
+        <li> {{ user.login }}</li>
+        <li> {{ user.firstName }}</li>
+        <li> {{ user.lastName }}</li>
+        <li> {{ user.age }}</li>
+      </div>
+    </div>
+  </div>
 </div>
