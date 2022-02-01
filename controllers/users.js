@@ -1,43 +1,92 @@
 import { v4 as uuidv4 } from "uuid";
+// const inputValidation = require("../validator/validation");
+const Joi = require("joi");
 
 const users = [];
 
+const schema = Joi.object({
+  login: Joi.string().alphanum().required(),
+  password: Joi.string().alphanum().required(),
+  age: Joi.number().required().min(4).max(130),
+}).unknown();
+
 export const getUsers = (req, res) => {
-  res.send(users);
+  if (users.length) {
+   res.status(200);
+    res.send(users);
+  }
+  else{
+    res.status(400);
+    res.json({
+      error: "No users in the DBs"
+    })
+  }
 };
 
 export const createUser = (req, res) => {
   const user = req.body;
-  const userObj = { ...user, id: uuidv4(), isDeleted: false };
-  users.push(userObj);
-  res.send(`User with id: ${userObj.id} added to database`);
+  const response = schema.validate(user);
+  if (response.error.isJoi) {
+    return res.status(422).send(response.error.details[0].message);
+  }
+  if (response.error) {
+    return res.status(400).send(response.error.details[0].message);
+  } else {
+    const userObj = { ...user, id: uuidv4(), isDeleted: false };
+    users.push(userObj);
+    res.status(200);
+    res.send(`User with id: ${userObj.id} added to database`);
+  }
 };
 
 export const getUserById = (req, res) => {
   const { id } = req.params;
   const foundUser = users.find((user) => user.id === id);
-  res.send(foundUser);
+  if (foundUser) {
+    res.status(200);
+    res.send(foundUser);
+  } else {
+    res.status(404);
+    res.json({
+      error: "User not found",
+    });
+  }
 };
 
 export const deleteUser = (req, res) => {
   const { id } = req.params;
   const deletedUser = users.find((user) => user.id === id);
-  deletedUser.isDeleted = true;
-  res.send(deletedUser);
+  if (deletedUser) {
+    deletedUser.isDeleted = true;
+    res.status(200);
+    res.send(deletedUser);
+  } else {
+    res.status(400);
+    res.json({
+      error: "Could not delete user",
+    });
+  }
 };
 
 export const updateUser = (req, res) => {
   const { id } = req.params;
-
   const { login, password, age } = req.body;
 
-  const userToBeUpdated = users.find((user) => user.id === id);
+  const response = schema.validate({ login, password, age });
 
-  if (login) userToBeUpdated.login = login;
+  if (response.error) {
+    return res.status(400).send(response.error.details[0].message);
+  } else {
+    const userToBeUpdated = users.find((user) => user.id === id);
 
-  if (password) userToBeUpdated.password = password;
+    if (login) userToBeUpdated.login = login;
 
-  if (age) userToBeUpdated.age = age;
+    if (password) userToBeUpdated.password = password;
 
-  res.send(`User with id ${userToBeUpdated.id} has been updated`);
+    if (age) userToBeUpdated.age = age;
+
+    res.status(200);
+
+    res.send(`User with id ${userToBeUpdated.id} has been updated`);
+  }
 };
