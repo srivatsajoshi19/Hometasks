@@ -12,39 +12,27 @@ const schema = Joi.object({
 
 export const getUsers = (req, res) => {
   if (users.length) {
-   res.status(200);
-    res.send(users);
-  }
-  else{
+    res.status(200).send(users);
+  } else {
     res.status(400);
     res.json({
-      error: "No users in the DBs"
-    })
+      error: "No users in the DBs",
+    });
   }
 };
 
 export const createUser = (req, res) => {
   const user = req.body;
-  const response = schema.validate(user);
-  if (response.error.isJoi) {
-    return res.status(422).send(response.error.details[0].message);
-  }
-  if (response.error) {
-    return res.status(400).send(response.error.details[0].message);
-  } else {
-    const userObj = { ...user, id: uuidv4(), isDeleted: false };
-    users.push(userObj);
-    res.status(200);
-    res.send(`User with id: ${userObj.id} added to database`);
-  }
+  const userObj = { ...user, id: uuidv4(), isDeleted: false };
+  users.push(userObj);
+  res.status(200).send(`User with id: ${userObj.id} added to database`);
 };
 
 export const getUserById = (req, res) => {
   const { id } = req.params;
-  const foundUser = users.find((user) => user.id === id);
+  const { password, ...foundUser } = users.find((user) => user.id === id);
   if (foundUser) {
-    res.status(200);
-    res.send(foundUser);
+    res.status(200).send(foundUser);
   } else {
     res.status(404);
     res.json({
@@ -58,8 +46,7 @@ export const deleteUser = (req, res) => {
   const deletedUser = users.find((user) => user.id === id);
   if (deletedUser) {
     deletedUser.isDeleted = true;
-    res.status(200);
-    res.send(deletedUser);
+    res.status(200).send(deletedUser);
   } else {
     res.status(400);
     res.json({

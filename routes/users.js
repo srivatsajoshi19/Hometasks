@@ -3,13 +3,13 @@ import {getUsers, getUserById, createUser, deleteUser, updateUser} from "../cont
 
 const router = express.Router();
 
-const users = [];
+
 
 //GET ALL USERS
 router.get("/",getUsers);
 
 //POST : CREATE NEW USER
-router.post("/", createUser);
+router.post("/", validator, createUser);
 
 //GET USERS BY ID
 router.get("/:id", getUserById);
